@@ -42,5 +42,3 @@ vignettes/*.pdf
 # large data files
 data/Hill_Shannon*
 
-# .pdf outputs
-figures/*.pdf
