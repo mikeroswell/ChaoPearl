@@ -30,26 +30,28 @@ SADs_list<-map(c("lnorm", "gamma"), function(distr){
     })
 })
 
-nc <- 9 # set number of cores
-future::plan(strategy = "multisession", workers = nc)
+# this generates the data but only run if you have some time!
 
-cpDat_full <- map_dfr(flatten(flatten(SADs_list)), function(SAD){
-    map_dfr(floor(10^seq(2, 5, 0.25)), function(ss){
-        cpDat <- checkplot_inf(SAD, l = 0, inds = ss, reps = 10000)
-        data.frame(cpDat
-                   , dist = SAD$distribution_info[1]
-                   , param = SAD$distribution_info[2]
-                   , rich = SAD$community_info[1]
-                   , HillShannon = SAD$community_info[2]
-                   , HillSimpson = SAD$community_info[3]
-        )
-        })
-})
+# nc <- 9 # set number of cores
+# future::plan(strategy = "multisession", workers = nc)
+# 
+# cpDat_full <- map_dfr(flatten(flatten(SADs_list)), function(SAD){
+#     map_dfr(floor(10^seq(2, 5, 0.25)), function(ss){
+#         cpDat <- checkplot_inf(SAD, l = 0, inds = ss, reps = 10000)
+#         data.frame(cpDat
+#                    , dist = SAD$distribution_info[1]
+#                    , param = SAD$distribution_info[2]
+#                    , rich = SAD$community_info[1]
+#                    , HillShannon = SAD$community_info[2]
+#                    , HillSimpson = SAD$community_info[3]
+#         )
+#         })
+# })
 
 # save the data
-data.table::fwrite(cpDat_full, "data/Hill_Shannon_checkplot_data.csv", row.names = FALSE)
+# data.table::fwrite(cpDat_full, "data/Hill_Shannon_checkplot_data.csv", row.names = FALSE)
 
-# read data back in
+# read data back in (I have this locally but migth need to change to dropbox path)
 cpDat_full <- read.csv("data/Hill_Shannon_checkplot_data.csv")
 
 # example of piano plots
