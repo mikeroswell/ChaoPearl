@@ -55,16 +55,22 @@ SADs_list<-map(c("lnorm", "gamma"), function(distr){
 cpDat_full <- read.csv("data/Hill_Shannon_checkplot_data.csv")
 
 # example of piano plots
+
+pdf("figures/pearlPianos.pdf")
 cpDat_full %>% 
     filter(param == unique(param)[[3]]) %>%     
     checkPlot(facets = 13) + # specify number of facets to get horizontal lines to print
     facet_wrap(~inds) + 
     theme_classic() +
-    ylim(c(0, 5000))
+    ylim(c(0, 3300)) +
+    labs(title = "Hill-Shannon checkplots \nlognormal SAD with 100 species and Hill-Simpson of 15.85")
+dev.off()
 
 # and slugplot
+pdf("figures/pearlSlug.pdf")
 cpDat_full %>% 
     filter(param == unique(param)[[3]] # lazy way to get only one combination of community simulation parameters
            , inds == 1000) %>% 
     mutate(est = chaoest) %>% # this line b/c for now the checkPlotR functions take only fixed column names
     rangePlot(title = "slugplot for Chao & Jost Hill-Shannon CI estimator.\nN= 1000; lognormal SAD with 100 species and Hill-Simpson of 15.85")
+dev.off()
